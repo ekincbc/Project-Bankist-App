@@ -34,6 +34,7 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
+console.log(accounts);
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -61,6 +62,18 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const createUserName = function (accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUserName(accounts);
+
 const displayMovements = function (movements) {
   containerMovements.innerHTML = '';
   movements.forEach((mov, i) => {
@@ -80,32 +93,58 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
-
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, cur) => acc + cur, 0);
   // console.log(balance);
   labelBalance.textContent = `${balance} €`;
 };
 
-calcDisplayBalance(account1.movements);
-
-const calcDisplaySummary = function (movements) {
-  const summaryIn = movements
+const calcDisplaySummary = function (currentAccount) {
+  const summaryIn = currentAccount.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${summaryIn} €`;
 
-  const summaryOut = movements
+  const summaryOut = currentAccount.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(summaryOut)} €`;
 
-  const interest = movements
+  const interest = currentAccount.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * currentAccount.interestRate) / 100)
     .reduce((acc, deposit) => acc + deposit, 0);
   labelSumInterest.textContent = `${interest} €`;
 };
 
-calcDisplaySummary(account1.movements);
+console.log();
+
+// Event handler
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+
+  if (currentAccount && currentAccount.pin === Number(inputLoginPin.value)) {
+    labelWelcome.textContent =
+      'Welcome back, ' + currentAccount.owner.split(' ')[0];
+
+    containerApp.style.opacity = 100;
+
+    // clear input field
+    inputLoginUsername.value = inputLoginPin.value = '';
+    // clears the cursor on pin field after logging in
+    inputLoginPin.blur();
+
+    // Display movements
+    displayMovements(currentAccount.movements);
+    // Display balance
+    calcDisplayBalance(currentAccount.movements);
+    // Display summary
+    calcDisplaySummary(currentAccount);
+  }
+});
