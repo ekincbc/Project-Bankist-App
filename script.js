@@ -34,7 +34,7 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
-console.log(accounts);
+// console.log(accounts);
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -104,7 +104,7 @@ const displayMovements = function (movements) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
-  // console.log(balance);
+  // console.log(acc.balance);
   labelBalance.textContent = `${acc.balance} €`;
 };
 
@@ -125,8 +125,6 @@ const calcDisplaySummary = function (currentAccount) {
     .reduce((acc, deposit) => acc + deposit, 0);
   labelSumInterest.textContent = `${interest} €`;
 };
-
-console.log();
 
 // Event handler
 let currentAccount;
@@ -174,6 +172,28 @@ btnTransfer.addEventListener('click', function (e) {
     updateUI(currentAccount);
   }
 
+  inputTransferTo.value = inputTransferAmount.value = '';
+
+  inputTransferAmount.blur();
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
   inputTransferTo.value = inputTransferAmount.value = '';
 
   inputTransferAmount.blur();
