@@ -105,7 +105,7 @@ const displayMovements = function (movements) {
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
   // console.log(balance);
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${acc.balance} €`;
 };
 
 const calcDisplaySummary = function (currentAccount) {
@@ -153,18 +153,13 @@ btnLogin.addEventListener('click', function (e) {
   }
 });
 
-// addEventListener to formbtntransfer
-// take the values from transfer to and amount inputs
-// put those values to transaction section as a deposit or withdrawal depends on the user who sends and recieves the money
-// the amounts should be added to the movements array to display it
-
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Number(inputTransferAmount.value);
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
-  console.log(amount, reveiverAcc);
+  console.log(amount, receiverAcc);
   if (
     amount > 0 &&
     receiverAcc &&
