@@ -3,20 +3,32 @@
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // BANKIST APP
-
+let customUser = prompt(
+  'To login please provide your name and your surname: \n(Example: Ekin Cebeci)'
+);
+if (customUser) {
+  alert(
+    'Thank you, please use your initials of the name/surname provided and pin 1111 to see your account. \n(Example: username: ec pin: 1111)'
+  );
+} else {
+  customUser = 'Custom User';
+  alert(
+    "You did not enter a username of your choise, you can use 'cu' for Custom User and pin 1111"
+  );
+}
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: 'Ekin Cebeci',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
-  pin: 1111,
+  pin: 2222,
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: customUser,
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
-  pin: 2222,
+  pin: 1111,
 };
 
 const account3 = {
@@ -137,7 +149,6 @@ btnLogin.addEventListener('click', function (e) {
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
   );
-  console.log(currentAccount);
 
   if (currentAccount && currentAccount.pin === Number(inputLoginPin.value)) {
     labelWelcome.textContent =
@@ -174,7 +185,7 @@ btnTransfer.addEventListener('click', function (e) {
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
-  console.log(amount, receiverAcc);
+
   if (
     amount > 0 &&
     receiverAcc &&
