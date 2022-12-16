@@ -18,7 +18,7 @@ if (customUser) {
 }
 // Data
 const account1 = {
-  owner: 'Ekin Cebeci',
+  owner: 'John Doe',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 2222,
@@ -39,7 +39,7 @@ const account3 = {
 };
 
 const account4 = {
-  owner: 'Sarah Smith',
+  owner: 'Sarah Smith Walker',
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
